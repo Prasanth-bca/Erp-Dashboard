@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Command Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="logo">
+            <i class="fas fa-rocket"></i>
+            <h1>ERP Command Center</h1>
+        </div>
+        <div class="user-profile">
+            <span id="user-name">Sarah</span>
+            <i class="fas fa-user-circle"></i>
+            <button id="signout_button" style="display: none;">Sign Out</button>
+            <button id="authorize_button" style="display: block;">Authorize</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <nav class="main-tabs">
+            <button class="tab-link active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-link" data-tab="inbox">
+                <i class="fas fa-inbox"></i> Review Queue
+            </button>
+            <button class="tab-link" data-tab="review">Processed Queue</button>
+            <button class="tab-link" data-tab="analytics">Analytics</button>
+        </nav>
+
+        <div class="content">
+            <div id="dashboard" class="tab-content active">
+                <div class="cycle-filter">
+                    <button class="cycle-btn active" data-cycle="All">All Cycles</button>
+                    <button class="cycle-btn" data-cycle="Sales">Sales Cycle</button>
+                    <button class="cycle-btn" data-cycle="Purchase">Purchase Cycle</button>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card"><span class="kpi-value" id="kpi-total-docs">--</span><span class="kpi-label">No of Documents Received</span></div>
+                    <div class="kpi-card"><span class="kpi-value" id="kpi-review">--</span><span class="kpi-label">Items in Processed Queue</span></div>
+                    <div class="kpi-card"><span class="kpi-value" id="kpi-completed">--</span><span class="kpi-label">Items Completed</span></div>
+                </div>
+                <div class="dashboard-section" id="dashboard-review-queue"></div>
+            </div>
+
+            <div id="inbox" class="tab-content">
+                <!-- === BATCH BUTTON REMOVED FROM HERE === -->
+                <div class="tab-header">
+                    <h2>Review Queue</h2>
+                    <button id="refresh-inbox-btn" class="action-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <!-- === END OF CHANGE === -->
+                <p>Showing unprocessed emails from your Queue Sheet. Click "Process" to send an email to the ERP workflow.</p>
+                <div id="loading" class="status-box" style="display: none;"></div>
+                <div id="error" class="error-message" style="display: none;"></div>
+                <div id="email-list-container">
+                    <table id="email-table" class="data-table" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;">Status</th>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th style="width: 180px;">Received Date</th>
+                                <th style="width: 150px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="email-table-body">
+                            <!-- Rows will be inserted by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="review" class="tab-content">
+                <div class="tab-header">
+                    <h2>Full Processed Queue</h2>
+                    <button class="export-btn" data-target="full-review-queue-container">Export as CSV</button>
+                </div>
+                <div id="full-review-queue-container"></div>
+            </div>
+
+            <div id="analytics" class="tab-content">
+                <h2>Analytics</h2>
+                <p>Analytics and reporting features will be built here.</p>
+            </div>
+             
+             <div id="initial-placeholder" class="placeholder-container" style="display: none;">
+                 <h2>Welcome!</h2>
+                 <p>Please authorize to connect to your data.</p>
+             </div>
+        </div>
+    </main>
+
+    <div id="toast-container" class="toast-container"></div>
+    <div id="view-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content view-modal-content">
+            <div class="modal-header">
+                <h3 id="view-modal-title">Document Details</h3>
+                <button id="view-modal-close-btn" class="close-btn">&times;</button>
+            </div>
+            <div id="view-modal-body" class="view-modal-body"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="handleGapiLoad()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="handleGisLoad()"></script>
+</body>
+</html>
